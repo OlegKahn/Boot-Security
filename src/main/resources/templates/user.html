@@ -3,9 +3,35 @@
 <head>
     <title>Spring Security Example</title>
 </head>
+
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1><span sec:authentication="name"></span>, welcome spring boot security page!</h1>
+<br>
 
 
+<h2>User info</h2>
+<table border="1" style="width:300px">
+
+    <tbody>
+    <tr th:object="${user}">
+    <tr><td>First name</td><td><span th:text="${user.getFirstName()}"> </span></td></tr>
+    <tr><td>Last name</td><td><span th:text="${user.getLastName()}"> </span></td></tr>
+    <tr><td>Age</td><td><span th:text="${user.getAge()}"> </span></td></tr>
+
+    </tr>
+
+    </tbody>
+</table>
+
+<br>
+
+<span sec:authorize="hasRole('ADMIN')">
+        <form action="/admin/" method="GET">
+        <button type="submit">Admin panel</button>
+    </form>
+</span>
+<form th:action="@{/logout}" method="POST">
+    <button  type="submit">Log Out</button>
+</form>
 </body>
 </html>

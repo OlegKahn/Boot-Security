@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/admin/saveUser}" method="get" th:object="${user}">
+  <input type="hidden" th:field="*{id}">
+
+  <label>Username:</label>
+  <input type="text" th:field="*{username}" /><br/>
+
+  <label>Password:</label>
+  <input type="password" name="pass" th:value="${user.password}"  th:field="*{password}"/><br/>
+
+  <label>First name:</label>
+  <input type="text" th:field="*{firstName}" /><br/>
+
+  <label>Last name:</label>
+  <input type="text" th:field="*{lastName}" /><br/>
+
+  <label>Age:</label>
+  <input type="text" th:field="*{age}" /><br/>
+
+  <label>Roles:
+    <input type="checkbox" name="roles"
+           th:each="role : ${allRoles}"
+           th:text="${role.role}"
+           th:value="${role.role}"
+           th:field="*{roles}"
+    />
+  </label>
+
+  <label>Active:</label>
+  <select class="form-control" th:field="*{isActive}">
+    <option th:value="1" >true</option>
+    <option th:value="0" >false</option>
+  </select>
+
+  <input type="submit" value="Save">
+</form>
+</body>
+</html>
