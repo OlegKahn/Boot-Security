@@ -14,6 +14,7 @@
         text-align: center;
         padding: 5px;
     }
+
     .btn-link {
         color: gray;
         padding: 0;
@@ -29,26 +30,23 @@
             <span th:each="authority : ${#authentication.getAuthorities()}"
                   th:if="${authority.getAuthority().startsWith('ROLE_')}"
                   th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
-            </span>
+</span>
         </td>
         <td scope="col"></td>
         <td scope="col" style="width: 5%">
             <form th:action="@{/logout}" method="POST" style="display: inline;">
-                <button  type="submit" class="btn btn-link" >Logout</button>
+                <button type="submit" class="btn btn-link">Logout</button>
             </form>
         </td>
-<!--        <form th:action="@{/logout}" method="POST" style="display: inline;">-->
-<!--            <button  type="submit">Log Out</button>-->
-<!--        </form>-->
     </tr>
     </thead>
     <tbody>
     <tr>
         <td style="width: 15%; padding: 20px 0 0">
             <div class="list-group borderless">
-                <span sec:authorize="hasRole('ADMIN')">
-                <a href="/admin/" class="list-group-item list-group-item-action" style="border: transparent">Admin</a>
-                </span>
+<span sec:authorize="hasRole('ADMIN')">
+<a href="/admin/" class="list-group-item list-group-item-action" style="border: transparent">Admin</a>
+</span>
                 <a href="#" class="list-group-item list-group-item-action active" style="border: transparent">User</a>
             </div>
         </td>
@@ -66,7 +64,7 @@
                 <div class="border border-2" style="background-color: white; padding: 20px 10px 10px">
 
                     <div class="container-fluid" style="background-color: white">
-                        <table class="table table-striped" >
+                        <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -90,23 +88,6 @@
                                     </span>
                                 </td>
                             </tr>
-<!--                            <tr>-->
-<!--                                <td>2</td>-->
-<!--                                <td>Jacob</td>-->
-<!--                                <td>Thornton</td>-->
-<!--                                <td>@fat</td>-->
-<!--                                <td>@fat</td>-->
-<!--                                <td>@fat</td>-->
-<!--                            </tr>-->
-<!--                            <tr>-->
-<!--                                <td>3-->
-<!--                                </th>-->
-<!--                                <td>Larry</td>-->
-<!--                                <td>the Bird</td>-->
-<!--                                <td>@twitter</td>-->
-<!--                                <td>@twitter</td>-->
-<!--                                <td>@twitter</td>-->
-<!--                            </tr>-->
                             <tr>
                                 <th scope="row"></th>
                                 <td></td>
@@ -114,7 +95,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-<!--                                <td></td>-->
                             </tr>
                             </tbody>
                         </table>
