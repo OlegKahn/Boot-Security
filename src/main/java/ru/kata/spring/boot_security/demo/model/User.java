@@ -4,6 +4,8 @@ package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.*;
 
 @Entity
@@ -14,7 +16,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true)
+//    @Pattern(regexp="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$",message="length must be 3")
+@Email(message = "Wrong e-mail")
+
+@Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
@@ -111,15 +116,20 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", isActive=" + isActive +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", roles=" + roles +
                 '}';
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

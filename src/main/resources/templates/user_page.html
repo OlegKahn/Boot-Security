@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>User page</title>
+</head>
+<style>
+    .parent {
+        text-align: center;
+        padding: 5px;
+    }
+    .btn-link {
+        color: gray;
+        padding: 0;
+    }
+</style>
+<body>
+
+<table class="table">
+    <thead class="table-dark">
+    <tr>
+        <td scope="col" colspan="2"><span style="font-weight: bolder" sec:authentication="name"></span>
+            <span style="font-weight:normal">with roles:</span>
+            <span th:each="authority : ${#authentication.getAuthorities()}"
+                  th:if="${authority.getAuthority().startsWith('ROLE_')}"
+                  th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
+            </span>
+        </td>
+        <td scope="col"></td>
+        <td scope="col" style="width: 5%">
+            <form th:action="@{/logout}" method="POST" style="display: inline;">
+                <button  type="submit" class="btn btn-link" >Logout</button>
+            </form>
+        </td>
+<!--        <form th:action="@{/logout}" method="POST" style="display: inline;">-->
+<!--            <button  type="submit">Log Out</button>-->
+<!--        </form>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width: 15%; padding: 20px 0 0">
+            <div class="list-group borderless">
+                <span sec:authorize="hasRole('ADMIN')">
+                <a href="/admin/" class="list-group-item list-group-item-action" style="border: transparent">Admin</a>
+                </span>
+                <a href="#" class="list-group-item list-group-item-action active" style="border: transparent">User</a>
+            </div>
+        </td>
+
+        <td colspan="3" style="background-color: whitesmoke; position: absolute; height: 100%; width: 85%">
+            <div class="container-fluid" style="padding-left: 30px">
+                <h1>User information-page</h1>
+            </div>
+            <div class="container-fluid" style=" padding-left: 30px; padding-right: 30px">
+
+
+                <div class="border border-2" style="height: 50px;">
+                    <h5 style="padding: 10px">About user</h5></div>
+
+                <div class="border border-2" style="background-color: white; padding: 20px 10px 10px">
+
+                    <div class="container-fluid" style="background-color: white">
+                        <table class="table table-striped" >
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Age</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:object="${user}">
+                                <td><span th:text="${user.getId()}"> </span></td>
+                                <td><span th:text="${user.getFirstName()}"> </span></td>
+                                <td><span th:text="${user.getLastName()}"> </span></td>
+                                <td><span th:text="${user.getAge()}"> </span></td>
+                                <td><span th:text="${user.getUsername()}"> </span></td>
+                                <td>
+                                    <span th:each="role: ${user.getRoles()}">
+                                        <span th:text="${role}"></span>
+                                    </span>
+                                </td>
+                            </tr>
+<!--                            <tr>-->
+<!--                                <td>2</td>-->
+<!--                                <td>Jacob</td>-->
+<!--                                <td>Thornton</td>-->
+<!--                                <td>@fat</td>-->
+<!--                                <td>@fat</td>-->
+<!--                                <td>@fat</td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>3-->
+<!--                                </th>-->
+<!--                                <td>Larry</td>-->
+<!--                                <td>the Bird</td>-->
+<!--                                <td>@twitter</td>-->
+<!--                                <td>@twitter</td>-->
+<!--                                <td>@twitter</td>-->
+<!--                            </tr>-->
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+<!--                                <td></td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -3,15 +3,11 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.model.UsersCreationDto;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.HashSet;
 import java.util.List;
@@ -32,54 +28,53 @@ public class AdminController {
     }
 
     @GetMapping(value = "")
-    public String idnk() {
+    public String idk() {
         return "redirect:/admin/";
     }
 
     @GetMapping(value = "/")
     public String mainPage(ModelMap modelMap) {
         List<User> users = userService.listUsers();
-        modelMap.addAttribute("users", users);
-        return "admin";
-    }
-
-    @GetMapping(value = "new")
-    public String writeNewUser(Model model) {
         User user = new User();
+        UsersCreationDto usersCreationDto = new UsersCreationDto();
+        usersCreationDto.setUsers(users);
         Set<Role> allRoles = new HashSet<>();
         allRoles.add(new Role("USER"));
         allRoles.add(new Role("ADMIN"));
-        model.addAttribute("user", user);
-        model.addAttribute("allRoles", allRoles);
-
-        return "secondPage";
+        modelMap.addAttribute("allRoles", allRoles);
+        modelMap.addAttribute("uCD", usersCreationDto);
+        modelMap.addAttribute("userin", user);
+        return "admin_panel";
     }
 
 
-    @GetMapping(value = "/saveUser")
-    public String saveUser(@ModelAttribute User user) {
-        if (!StringUtils.isEmpty(user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+
+    @PostMapping(value = "/delete/{deleteId}")
+    public String deleteUser(@PathVariable("deleteId") long id) {
+        userService.delete(id);
+        return "redirect:/admin/";
+    }
+    @PostMapping(value = "/add/")
+    public String add(@ModelAttribute User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setIsActive(true);
         userService.add(user);
         return "redirect:/admin/";
     }
 
-
-    @GetMapping(value = "/delete")
-    public String deleteUser(@RequestParam("userId") long id) {
-        userService.delete(id);
+    @PostMapping("/update/")
+    public String update(@ModelAttribute User user) {
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(userService.getUser(user.getId()).getPassword());
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if (user.getRoles().isEmpty()) {
+            user.setRoles(userService.getUser(user.getId()).getRoles());
+        }
+        user.setIsActive(true);
+                userService.add(user);
         return "redirect:/admin/";
     }
 
-
-    @GetMapping(value = "/update")
-    public String updateUser(@RequestParam("userId") long id, Model model) {
-        Set<Role> allRoles = new HashSet<>();
-        allRoles.add(new Role("USER"));
-        allRoles.add(new Role("ADMIN"));
-        model.addAttribute(userService.getUser(id));
-        model.addAttribute("allRoles", allRoles);
-        return "secondPage";
-    }
 }

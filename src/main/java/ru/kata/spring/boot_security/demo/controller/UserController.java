@@ -32,6 +32,6 @@ public class UserController {
         }
         User user = userDao.findByUsername(currentUserName).get();
         modelMap.addAttribute("user", user);
-        return "user";
+        return "user_page";
     }
 }
